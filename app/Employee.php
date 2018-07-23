@@ -12,9 +12,18 @@ class Employee extends Model
      * @var array
      */
     protected $fillable = [
+    	'director_id',
     	'fio',
     	'position',
     	'employment_at',
     	'wages'
     ];
+
+    /**
+     * Get director that owns the employee
+     */
+    public function director()
+    {
+    	return $this->belongsTo('App\Employee', 'director_id');
+    }
 }
