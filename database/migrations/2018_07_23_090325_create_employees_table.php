@@ -15,6 +15,10 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('fio')->comment('ФИО');
+            $table->string('position')->comment('Должность');
+            $table->date('employment_at')->comment('Дата ​приема ​на ​работу');
+            $table->unsignedInteger('wages')->comment('Размер ​заработной ​платы');
             $table->timestamps();
         });
     }
