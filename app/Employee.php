@@ -3,9 +3,28 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 
 class Employee extends Model
 {
+    use Sortable;
+
+    /**
+     * The attributes that are sortable.
+     *
+     * @var array
+     */
+    public $sortable = [
+        'id',
+        'director_id',
+        'fio',
+        'position',
+        'employment_at',
+        'wages',
+        'created_at',
+        'updated_at'
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
