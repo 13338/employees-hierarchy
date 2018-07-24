@@ -26,4 +26,12 @@ class Employee extends Model
     {
     	return $this->belongsTo('App\Employee', 'director_id');
     }
+
+    /**
+     * Get subordinates
+     */
+    public function subordinates()
+    {
+        return $this->hasMany('App\Employee', 'director_id', 'id');
+    }
 }

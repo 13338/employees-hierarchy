@@ -12,7 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $employees = App\Employee::orderBy('id')
+        ->where('director_id', null)
+        ->paginate(5);
+    return view('employees', compact(['employees']));
 });
 
 Route::resource('employees', 'EmployeeController');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
