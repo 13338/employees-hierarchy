@@ -1,6 +1,6 @@
 @php
 $traverse = function ($employees, $first = false) use (&$traverse) {
-	echo '<table class="table table-bordered">';
+	echo '<table class="table table-hover border-left">';
 	if ($first) {
 		echo '<thead>
 			<tr>
