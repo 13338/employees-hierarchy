@@ -11,8 +11,11 @@ class EmployeesTableSeeder extends Seeder
      */
     public function run()
     {
-    	for ($i=0; $i < 50001; $i++) { 
-    		factory(App\Employee::class, 1)->create();
-    	}
+        for ($i=0; $i < 2000; $i++) { 
+        	factory(App\Employee::class, 1)->states('directors')->create();
+        }
+        for ($i=0; $i < 50000; $i++) { 
+        	factory(App\Employee::class, 1)->states('employees')->create();
+        }
     }
 }
