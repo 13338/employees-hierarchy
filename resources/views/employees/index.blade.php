@@ -3,15 +3,14 @@
 @section('content')
 <div class="container-fluid" id="container">
 	<div class="table-responsive">
-		<table class="table table-striped table-hover">
+		<table class="table table-striped table-hover table-bordered">
 			<thead>
 				<tr class="">
 					<th data-sort="id">
 						@sortablelink('id', __('id'))
-						{{-- @sortablelink('id', __('id')) --}}
 					</th>
 					<th data-sort="director_id">
-						@sortablelink('director_id', __('ID Руководителя'))
+						<abbr title="{{ __('ID Руководителя') }}">@sortablelink('director_id', __('Рук.'))</abbr>
 					</th>
 					<th data-sort="fio">
 						@sortablelink('fio', __('ФИО'))
@@ -31,6 +30,9 @@
 					<th data-sort="created_at">
 						@sortablelink('created_at', __('Дата создания'))
 					</th>
+					<th>
+						{{ __('Ссылки') }}
+					</th>
 				</tr>
 			</thead>
 			<tbody id="employees">
@@ -42,9 +44,10 @@
 					<td><input type="date" class="form-control form-control-sm" form="search" name="employment" value="{{ app('request')->input('employment') }}"></td>
 					<td><input type="text" class="form-control form-control-sm" form="search" name="wages" value="{{ app('request')->input('wages') }}"></td>
 					<td><input type="datetime-local" class="form-control form-control-sm" form="search" name="updated" value="{{ app('request')->input('updated') }}" step="1"></td>
-					<td><input type="datetime-local" class="form-control form-control-sm" form="search" name="created" value="{{ app('request')->input('created') }}" step="1">
+					<td><input type="datetime-local" class="form-control form-control-sm" form="search" name="created" value="{{ app('request')->input('created') }}" step="1"></td>
+					<td>
 						<form id="search">
-							<button class="btn btn-outline-success btn-block btn-sm mt-3" type="submit" style="display: none;">{{ __('Поиск') }}</button>
+							<button class="btn btn-success btn-block btn-sm" type="submit">{{ __('Поиск') }}</button>
 						</form>
 					</td>
 				</tr>
@@ -52,12 +55,19 @@
 				<tr class="employee">
 					<td>{{ $employee->id }}</td>
 					<td>{{ $employee->director_id ?: '-' }}</td>
-					<td>{{ $employee->fio }}</td>
+					<td><a href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->fio }}</a></td>
 					<td>{{ $employee->position }}</td>
 					<td>{{ $employee->employment_at }}</td>
 					<td>{{ $employee->wages }}</td>
 					<td>{{ $employee->updated_at }}</td>
 					<td>{{ $employee->created_at }}</td>
+					<td class="py-0 align-middle">
+                        <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Basic example">
+                            <a href="{{ route('employees.show', ['employee' => $employee->id]) }}" class="btn btn-outline-primary w-100" title="{{ __('Просмотр') }}"><i class="fa fa-eye"></i></a>
+                            <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}" class="btn btn-outline-warning w-100" title="{{ __('Редактировать') }}"><i class="fa fa-edit"></i></a>
+                            <button type="button" class="btn btn-outline-danger w-100 delete" data-id="{{ $employee->id }}" data-href="{{ route('employees.destroy', ['employee' => $employee->id]) }}" title="{{ __('Удалить') }}"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </td>
 				</tr>
 				@empty
 				<tr class="table-warning text-center employee">
@@ -73,11 +83,8 @@
 
 @section('js')
 	<script type="text/javascript">
-		$('input').focus(function() {
-			$('#search button').show();
-		});
 		// ajax sort, seach
-		$('#search button, th a').click(function(event) { //, th a
+		$('#search button, th a').click(function(event) {
 			event.preventDefault();
 			$('th i').removeClass('fa-sort-desc fa-sort-asc').addClass('fa-sort');
 			// sort
@@ -128,22 +135,50 @@
 			            <tr class="employee">
 							<td>${element.id}</td>
 							<td>${(element.director_id === null) ? '-' : element.director_id}</td>
-							<td>${element.fio}</td>
+							<td><a href="{{ route('employees.index') }}/${element.id}">${element.fio}</a></td>
 							<td>${element.position}</td>
 							<td>${element.employment_at}</td>
 							<td>${element.wages}</td>
 							<td>${element.updated_at}</td>
 							<td>${element.created_at}</td>
+							<td class="py-0 align-middle">
+		                        <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Basic example">
+		                            <a href="{{ route('employees.index') }}/${element.id}" class="btn btn-outline-primary w-100" title="{{ __('Просмотр') }}"><i class="fa fa-eye"></i></a>
+		                            <a href="{{ route('employees.index') }}/${element.id}/edit" class="btn btn-outline-warning w-100" title="{{ __('Редактировать') }}"><i class="fa fa-edit"></i></a>
+		                            <button type="button" class="btn btn-outline-danger w-100 delete" data-id="${element.id}" data-href="{{ route('employees.index') }}/${element.id}" title="{{ __('Удалить') }}"><i class="fa fa-trash-o"></i></button>
+		                        </div>
+		                    </td>
 						</tr>`);
 			        });
-		        } else {
-		        	$('#employees').append('<tr class="table-warning text-center employee"><td colspan="8">{{ __('Результатов нет') }}</td></tr>'); // if 0 results
+		        } else { // if 0 results
+		        	$('#employees').append('<tr class="table-warning text-center employee"><td colspan="8">{{ __('Результатов нет') }}</td></tr>');
 		        }
 			})
 			.fail(function(jqXHR, status) {
-				alert('Load error!');
+				alert(jqXHR.responseJSON.error);
 			});
-			
+		});
+		// delete employee
+		$('body').on('click', '.delete', function(event) {
+			event.preventDefault();
+			var element = $(this);
+			var url 	= element.data('href')
+			if (confirm("Delete ?")) {
+				$.ajax({
+					url: url,
+					type: 'POST',
+					dataType: 'json',
+					data: { _method: 'delete'},
+				})
+				.done(function() {
+					element.closest('tr').addClass('table-danger').fadeOut('1000', function() {
+						$(this).remove();
+					}); 
+				})
+				.fail(function(jqXHR, status) {
+					alert(jqXHR.responseJSON.error);
+				});
+			}
 		});
 	</script>
 @endsection

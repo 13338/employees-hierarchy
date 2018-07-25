@@ -31,7 +31,10 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li> --}}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('employees.index') }}">Employees</a>
+                        <a class="nav-link" href="{{ route('employees.index') }}">{{ __('Список сотрудников') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('employees.create') }}">{{ __('Создать сотрудника') }}</a>
                     </li>
                 </ul>
                 <!-- Right Side Of Navbar -->
@@ -40,9 +43,9 @@
                     @guest
                         <li class="nav-item">
                             @if (Request::is('login'))
-                                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Регистрация') }}</a>
                             @else
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Войти') }}</a>
                             @endif
                         </li>
                     @else
@@ -55,7 +58,7 @@
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
+                                    {{ __('Выход') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -69,12 +72,14 @@
         </nav>
 
         @yield('content')
+
     </div>
 
     <!-- Scripts -->
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript">$.ajaxSetup({headers:{'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}});</script>
     @yield('js')
 </body>
 </html>

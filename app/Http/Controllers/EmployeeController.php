@@ -42,7 +42,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('employees.create');
     }
 
     /**
@@ -53,7 +53,12 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (!($director = Employee::find($request->director_id))) {
+            $request->merge(['director_id' => null]);
+        }
+        $id = Employee::create($request->all());
+        $request->session()->flash('status', 'Employee created!');
+        return redirect()->route('employees.show', ['employee' => $id]);
     }
 
     /**
@@ -64,7 +69,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return view('employees.show', compact(['employee']));
     }
 
     /**
@@ -75,7 +80,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        //
+        return view('employees.edit', compact(['employee']));
     }
 
     /**
@@ -87,7 +92,12 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        //
+        if (!($director = Employee::find($request->director_id))) {
+            $request->merge(['director_id' => null]);
+        }
+        $employee->fill($request->all())->save();
+        $request->session()->flash('status', 'Employee updated!');
+        return redirect()->route('employees.show', ['employee' => $employee->id]);
     }
 
     /**
@@ -98,6 +108,13 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        //
+        if ($employee->delete()) {
+            return response()->json([
+                'success' => 'Employee deleted!',
+                'employee' => $employee
+            ]);
+        } else {
+            return response()->json(['error' => 'Not deleted!'], 403);;
+        }
     }
 }
