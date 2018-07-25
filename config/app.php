@@ -168,6 +168,7 @@ return [
          */
         Laravel\Tinker\TinkerServiceProvider::class,
         Kyslik\ColumnSortable\ColumnSortableServiceProvider::class,
+        Cerbero\QueryFilters\QueryFiltersServiceProvider::class,
         /*
          * Application Service Providers...
          */

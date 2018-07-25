@@ -2,12 +2,13 @@
 
 namespace App;
 
+use Cerbero\QueryFilters\FiltersRecords;
 use Illuminate\Database\Eloquent\Model;
 use Kyslik\ColumnSortable\Sortable;
 
 class Employee extends Model
 {
-    use Sortable;
+    use Sortable, FiltersRecords;
 
     /**
      * The attributes that are sortable.

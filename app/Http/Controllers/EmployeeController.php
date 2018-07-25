@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Employee;
+use App\QueryFilters\EmployeeFilters;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -12,9 +13,10 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(EmployeeFilters $filters)
     {
         $employees = Employee::sortable()
+            ->filterBy($filters)
             ->paginate(50);
         return view('employees.index', compact(['employees']));
     }
