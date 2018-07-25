@@ -18,7 +18,11 @@ class EmployeeController extends Controller
         $employees = Employee::sortable()
             ->filterBy($filters)
             ->paginate(50);
-        return view('employees.index', compact(['employees']));
+        if (request()->wantsJson()) {
+            return $employees;
+        } else {
+            return view('employees.index', compact(['employees']));
+        }
     }
 
     /**
