@@ -53,5 +53,26 @@
 @endsection
 
 @section('js')
-
+    <script type="text/javascript">
+        // delete employee
+        $('body').on('click', '.delete', function(event) {
+            event.preventDefault();
+            var element = $(this);
+            var url     = element.data('href')
+            if (confirm("Delete ?")) {
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: { _method: 'delete'},
+                })
+                .done(function() {
+                    window.location.href = '{{ route('employees.index') }}'; 
+                })
+                .fail(function(jqXHR, status) {
+                    alert(jqXHR.responseJSON.error);
+                });
+            }
+        });
+    </script>
 @endsection
