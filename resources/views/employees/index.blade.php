@@ -62,12 +62,12 @@
 					<td>{{ $employee->updated_at }}</td>
 					<td>{{ $employee->created_at }}</td>
 					<td class="py-0 align-middle">
-                        <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Basic example">
-                            <a href="{{ route('employees.show', ['employee' => $employee->id]) }}" class="btn btn-outline-primary w-100" title="{{ __('Просмотр') }}"><i class="fa fa-eye"></i></a>
-                            <a href="{{ route('employees.edit', ['employee' => $employee->id]) }}" class="btn btn-outline-warning w-100" title="{{ __('Редактировать') }}"><i class="fa fa-edit"></i></a>
-                            <button type="button" class="btn btn-outline-danger w-100 delete" data-id="{{ $employee->id }}" data-href="{{ route('employees.destroy', ['employee' => $employee->id]) }}" title="{{ __('Удалить') }}"><i class="fa fa-trash-o"></i></button>
-                        </div>
-                    </td>
+						<div class="btn-group btn-group-sm d-flex" role="group" aria-label="Basic example">
+							<a href="{{ route('employees.show', ['employee' => $employee->id]) }}" class="btn btn-outline-primary w-100" title="{{ __('Просмотр') }}"><i class="fa fa-eye"></i></a>
+							<a href="{{ route('employees.edit', ['employee' => $employee->id]) }}" class="btn btn-outline-warning w-100" title="{{ __('Редактировать') }}"><i class="fa fa-edit"></i></a>
+							<button type="button" class="btn btn-outline-danger w-100 delete" data-id="{{ $employee->id }}" data-href="{{ route('employees.destroy', ['employee' => $employee->id]) }}" title="{{ __('Удалить') }}"><i class="fa fa-trash-o"></i></button>
+						</div>
+					</td>
 				</tr>
 				@empty
 				<tr class="table-warning text-center employee">
@@ -142,12 +142,12 @@
 							<td>${element.updated_at}</td>
 							<td>${element.created_at}</td>
 							<td class="py-0 align-middle">
-		                        <div class="btn-group btn-group-sm d-flex" role="group" aria-label="Basic example">
-		                            <a href="{{ route('employees.index') }}/${element.id}" class="btn btn-outline-primary w-100" title="{{ __('Просмотр') }}"><i class="fa fa-eye"></i></a>
-		                            <a href="{{ route('employees.index') }}/${element.id}/edit" class="btn btn-outline-warning w-100" title="{{ __('Редактировать') }}"><i class="fa fa-edit"></i></a>
-		                            <button type="button" class="btn btn-outline-danger w-100 delete" data-id="${element.id}" data-href="{{ route('employees.index') }}/${element.id}" title="{{ __('Удалить') }}"><i class="fa fa-trash-o"></i></button>
-		                        </div>
-		                    </td>
+								<div class="btn-group btn-group-sm d-flex" role="group" aria-label="Basic example">
+									<a href="{{ route('employees.index') }}/${element.id}" class="btn btn-outline-primary w-100" title="{{ __('Просмотр') }}"><i class="fa fa-eye"></i></a>
+									<a href="{{ route('employees.index') }}/${element.id}/edit" class="btn btn-outline-warning w-100" title="{{ __('Редактировать') }}"><i class="fa fa-edit"></i></a>
+									<button type="button" class="btn btn-outline-danger w-100 delete" data-id="${element.id}" data-href="{{ route('employees.index') }}/${element.id}" title="{{ __('Удалить') }}"><i class="fa fa-trash-o"></i></button>
+								</div>
+							</td>
 						</tr>`);
 			        });
 		        } else { // if 0 results

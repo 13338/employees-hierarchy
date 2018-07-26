@@ -31,7 +31,7 @@
                 <hr class="form-divider">
                 <div class="form-group">
                 	<label for="employment_at">{{ __('Дата приема') }}</label>
-                	<input name="employment_at" type="date" class="form-control" id="employment_at" placeholder="{{ __('Дата приема') }}" value="{{ old('employment_at') or date('Y-m-d') }}">
+                	<input name="employment_at" type="date" class="form-control" id="employment_at" placeholder="{{ __('Дата приема') }}" value="{{ old('employment_at') ?: date('Y-m-d') }}">
                 </div>
                 <hr class="form-divider">
                 <div class="form-group">

@@ -114,7 +114,7 @@ class EmployeeController extends Controller
                 'employee' => $employee
             ]);
         } else {
-            return response()->json(['error' => 'Not deleted!'], 403);;
+            return response()->json(['error' => 'Not deleted!'], 403);
         }
     }
 }
