@@ -53,7 +53,7 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        if (!($director = Employee::find($request->director_id))) {
+        if (!($director = Employee::find($request->director_id))) { // Director
             $request->merge(['director_id' => null]);
         }
         $id = Employee::create($request->all());
@@ -92,12 +92,16 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
-        if (!($director = Employee::find($request->director_id))) {
+        if (!($director = Employee::find($request->director_id))) { // Director
             $request->merge(['director_id' => null]);
         }
-        $employee->fill($request->all())->save();
-        $request->session()->flash('status', 'Employee updated!');
-        return redirect()->route('employees.show', ['employee' => $employee->id]);
+        $employee->update($request->all());
+        if (request()->wantsJson()) {
+            return $employee;
+        } else {
+            $request->session()->flash('status', 'Employee updated!');
+            return redirect()->route('employees.show', ['employee' => $employee->id]);
+        }
     }
 
     /**

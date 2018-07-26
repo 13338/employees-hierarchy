@@ -6,7 +6,7 @@
         <div class="col-md-8 my-5">
         	<h1>{{ __('Создать сотрудника') }}</h1>
         	<hr>
-			<form action="{{ route('employees.store') }}" method="POST">
+			<form action="{{ route('employees.store') }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 <div class="form-group">
                     <label for="director_id">{{ __('Руководитель') }}</label>
@@ -17,6 +17,11 @@
                     		<option value="-1" selected="selected">{{ __('Без руководителя') }}</option>
                     	@endif
                     </select>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                	<label for="avatar">{{ __('Фотография') }}</label>
+                	<input name="avatar" type="file" class="form-control" id="avatar" placeholder="{{ __('Фотография') }}" value="{{ old('avatar') }}">
                 </div>
                 <hr class="form-divider">
                 <div class="form-group">

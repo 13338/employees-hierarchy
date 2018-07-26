@@ -4,7 +4,10 @@
 <div class="container">
 	<div class="row justify-content-center">
         <div class="col-md-8 my-5">
-        	<h1>{{ $employee->fio }}</h1>
+        	<h1>
+                <img src="{{ asset('storage/'.($employee->avatar ?: 'default-50x50.gif')) }}" class="rounded float-left mr-2" alt="{{ __('Фотография') }}" width="50" height="50">
+                {{ $employee->fio }}
+            </h1>
         	<hr>
         	<div class="card">
         		<div class="card-body">

@@ -55,7 +55,12 @@
 				<tr class="employee">
 					<td>{{ $employee->id }}</td>
 					<td>{{ $employee->director_id ?: '-' }}</td>
-					<td><a href="{{ route('employees.show', ['employee' => $employee->id]) }}">{{ $employee->fio }}</a></td>
+					<td>
+						<a href="{{ route('employees.show', ['employee' => $employee->id]) }}">
+							<img src="{{ asset('storage/'.($employee->avatar ?: 'default-50x50.gif')) }}" class="rounded float-left mr-2 border" alt="{{ __('Фотография') }}" width="50" height="50">
+							{{ $employee->fio }}
+						</a>
+					</td>
 					<td>{{ $employee->position }}</td>
 					<td>{{ $employee->employment_at }}</td>
 					<td>{{ $employee->wages }}</td>
@@ -135,7 +140,12 @@
 			            <tr class="employee">
 							<td>${element.id}</td>
 							<td>${(element.director_id === null) ? '-' : element.director_id}</td>
-							<td><a href="{{ route('employees.index') }}/${element.id}">${element.fio}</a></td>
+							<td>
+								<a href="{{ route('employees.index') }}/${element.id}">
+									<img src="{{ asset('storage') }}/${((element.avatar === null) ? 'default-50x50.gif' : element.avatar)}" class="rounded float-left mr-2 border" alt="{{ __('Фотография') }}" width="50" height="50">
+									${element.fio}
+								</a>
+							</td>
 							<td>${element.position}</td>
 							<td>${element.employment_at}</td>
 							<td>${element.wages}</td>

@@ -4,6 +4,7 @@ namespace App;
 
 use Cerbero\QueryFilters\FiltersRecords;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Kyslik\ColumnSortable\Sortable;
 
 class Employee extends Model
@@ -32,12 +33,51 @@ class Employee extends Model
      * @var array
      */
     protected $fillable = [
-    	'director_id',
-    	'fio',
-    	'position',
-    	'employment_at',
-    	'wages'
+        'director_id',
+        'avatar',
+        'fio',
+        'position',
+        'employment_at',
+        'wages'
     ];
+
+    public static function create(array $attributes = [])
+    {
+        $attributes['avatar'] = $attributes['avatar']->storeAs('avatars', uniqid().'.'.$attributes['avatar']->getClientOriginalExtension(), 'public');
+
+        $model = static::query()->create($attributes);
+        
+        return $model;
+    }
+
+    public function update(array $attributes = [], array $options = [])
+    {
+        if (! $this->exists) {
+            return false;
+        }
+
+        if (array_key_exists('avatar', $attributes)) {
+            if ($attributes['avatar'] === null){
+                $attributes['avatar'] = null;
+            } else {
+                $attributes['avatar'] = $attributes['avatar']->storeAs('avatars', uniqid().'.'.$attributes['avatar']->getClientOriginalExtension(), 'public');
+            }
+            if (!empty($this->avatar)) {
+                Storage::disk('public')->delete($this->avatar);
+            }
+        }
+
+        return $this->fill($attributes)->save($options);
+    }
+
+    public function delete()
+    {
+        if (!empty($this->avatar)) {
+            Storage::disk('public')->delete($this->avatar);
+        }
+        
+        return parent::delete();
+    }
 
     /**
      * Get director that owns the employee

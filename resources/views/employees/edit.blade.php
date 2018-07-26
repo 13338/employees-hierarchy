@@ -6,7 +6,7 @@
         <div class="col-md-8 my-5">
         	<h1>{{ __('Изменение сотрудника') }} ID{{ $employee->id }}</h1>
         	<hr>
-			<form action="{{ route('employees.update', ['employee' => $employee->id]) }}" method="POST">
+			<form action="{{ route('employees.update', ['employee' => $employee->id]) }}" method="POST" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 {{ method_field('PATCH') }}
                 <div class="form-group">
@@ -14,6 +14,17 @@
                     <select name="director_id" class="form-control" id="director_id">
                     	<option value="{{ $employee->director_id or '-1' }}" selected="selected">{{ $employee->director->fio or __('Без руководителя') }}</option>
                     </select>
+                </div>
+                <hr class="form-divider">
+                <div class="form-group">
+                	<label for="avatar">{{ __('Фотография') }}</label>
+                	<div id="current_avatar">
+                		<img src="{{ asset('storage/'.($employee->avatar ?: 'default-50x50.gif')) }}" class="rounded float-left mr-2 mb-2 border" alt="{{ __('Фотография') }}" width="50" height="50">
+                		@if ($employee->avatar)
+                		<h1><a href="#" data-href="{{ route('employees.update', ['employee' => $employee->id]) }}" class="text-danger" id="delete_avatar"><i class="fa fa-trash-o"></i></a></h1>
+                		@endif
+                	</div>
+            		<input name="avatar" type="file" class="form-control" id="avatar" placeholder="{{ __('Фотография') }}" value="{{ old('avatar') }}">
                 </div>
                 <hr class="form-divider">
                 <div class="form-group">
@@ -46,6 +57,7 @@
 
 @section('js')
 <script type="text/javascript">
+	// ajax select for director field
 	$('#director_id').select2({
 		ajax: {
 			url: '{{ route('employees.index') }}',
@@ -88,5 +100,27 @@
 	function formatRepoSelection (repo) {
 		return (repo.fio || repo.text);
 	}
+	@if ($employee->avatar)
+	// delete avatar (set null)
+	$('#delete_avatar').click(function(event) {
+		event.preventDefault();
+		var element = $(this);
+			var url 	= element.data('href')
+			if (confirm("Delete ?")) {
+				$.ajax({
+					url: url,
+					type: 'POST',
+					dataType: 'json',
+					data: { _method: 'patch', avatar: null},
+				})
+				.done(function() {
+					$('#current_avatar').remove();
+				})
+				.fail(function(jqXHR, status) {
+					alert(jqXHR.responseJSON.error);
+				});
+			}
+	});
+	@endif
 </script>
 @endsection
