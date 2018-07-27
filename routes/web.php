@@ -11,12 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    $employees = App\Employee::orderBy('id')
-        ->where('director_id', null)
-        ->paginate(5);
-    return view('employees', compact(['employees']));
-});
+Route::get('/', 'EmployeeController@home')->name('home');
 
 Route::resource('employees', 'EmployeeController');
 

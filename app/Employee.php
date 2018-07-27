@@ -41,6 +41,15 @@ class Employee extends Model
         'wages'
     ];
 
+    /**
+     * The attributes that are auto appends to model object (getMyattrAttribute() method).
+     *
+     * @var array
+     */
+    protected $appends = [
+        'count_subordinates'
+    ];
+
     public static function create(array $attributes = [])
     {
         $attributes['avatar'] = $attributes['avatar']->storeAs('avatars', uniqid().'.'.$attributes['avatar']->getClientOriginalExtension(), 'public');
@@ -93,5 +102,14 @@ class Employee extends Model
     public function subordinates()
     {
         return $this->hasMany('App\Employee', 'director_id', 'id');
+    }
+
+    /**
+     * Get subordinates number
+     * @return int
+     */
+    public function getCountSubordinatesAttribute()
+    {
+        return $this->hasMany('App\Employee', 'director_id', 'id')->count();
     }
 }

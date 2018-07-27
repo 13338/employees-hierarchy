@@ -15,7 +15,32 @@ class EmployeeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['home']);
+    }
+
+    /**
+     * Display a tree of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+        if (request()->wantsJson()) {
+            // $employees = Employee::with(['subordinates' => function ($query) {
+            //     $query->count();
+            // }])
+            $employees = Employee::with(['subordinates'])
+                ->orderBy('id')
+                ->where('director_id', request()->branch)
+                ->paginate(5);
+            return $employees;
+        } else {
+            $employees = Employee::orderBy('id')
+                ->where('director_id', null)
+                ->orWhere('director_id', 0)
+                ->paginate(5);
+            return view('employees', compact(['employees']));
+        }
     }
 
     /**

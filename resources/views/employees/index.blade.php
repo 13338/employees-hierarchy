@@ -94,7 +94,7 @@
 			$('th i').removeClass('fa-sort-desc fa-sort-asc').addClass('fa-sort');
 			// sort
 			if ($(event.target).is('th a')) {
-				var th 	   = $(this).parent();
+				var th 	   = $(this).closest('th');
 				var sort   = th.data('sort');
 				var order  = 'asc';
 
