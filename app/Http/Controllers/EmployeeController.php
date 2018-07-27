@@ -117,10 +117,18 @@ class EmployeeController extends Controller
      */
     public function update(Request $request, Employee $employee)
     {
+        if (isset($request->new_director_id)) { // Replacement of an director
+            $employee->subordinates()->update(['director_id' => $request->new_director_id]);
+            if ($request->delete) {
+                $employee->delete();
+            }
+            $request->session()->flash('status', 'Director changed!');
+            return redirect()->route('employees.show', ['employee' => $request->new_director_id]);
+        }
         if (!($director = Employee::find($request->director_id))) { // Director
             $request->merge(['director_id' => null]);
         }
-        $employee->update($request->all());
+        $employee->update($request->all()); // Update info
         if (request()->wantsJson()) {
             return $employee;
         } else {
