@@ -21,7 +21,7 @@
         				<tbody>
         					<tr>
         						<td>Руководитель</td>
-        						<td>{{ $employee->director->fio or '-' }}</td>
+        						<td>{!! $employee->director ? '<a href="'.route('employees.show', ['employee' => $employee->director->id]).'">'.$employee->director->fio.'</a>' : '-' !!}</td>
         					</tr>
         					<tr>
         						<td>ФИО</td>

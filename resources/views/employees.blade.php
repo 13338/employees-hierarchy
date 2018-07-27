@@ -15,7 +15,7 @@ $traverse = function ($employees, $count = 2, $first = true) use (&$traverse) {
 		if (count($employee->subordinates) > 0) {
     		echo '<tr class="branch-'.$employee->id.'">
 				<td>'.$employee->id.'</td>
-				<td>'.$employee->fio.'</td>
+				<td><a href="'.route('employees.show', ['employee' => $employee->id]).'">'.$employee->fio.'</a></td>
 				<td>'.$employee->position.(($count == 1) ? ' <a href="#" data-branch="'.$employee->id.'" class="branch float-right"><i class="fa fa-plus"></i></a>' : '').'</td>
 			</tr>';
 			if ($count != 1) {
@@ -28,7 +28,7 @@ $traverse = function ($employees, $count = 2, $first = true) use (&$traverse) {
     	} else {
     		echo '<tr class="branch-'.$employee->id.'">
 				<td>'.$employee->id.'</td>
-				<td>'.$employee->fio.'</td>
+				<td><a href="'.route('employees.show', ['employee' => $employee->id]).'">'.$employee->fio.'</a></td>
 				<td>'.$employee->position.'</td>
 			</tr>';
     	}
@@ -74,7 +74,7 @@ $traverse = function ($employees, $count = 2, $first = true) use (&$traverse) {
 			$.each(result.data, function(index, element) {
 				html += 	`<tr class="branch-${element.id}">
 								<td>${element.id}</td>
-								<td>${element.fio}</td>
+								<td><a href="{{ route('employees.index') }}/${element.id}">${element.fio}</a></td>
 								<td>${element.position}</td>
 							</tr>`;
 				if (element.count_subordinates > 0) {
@@ -87,7 +87,7 @@ $traverse = function ($employees, $count = 2, $first = true) use (&$traverse) {
 					$.each(element.subordinates, function(index, element) {
 						html += 			`<tr class="branch-${element.id}">
 												<td>${element.id}</td>
-												<td>${element.fio}</td>
+												<td><a href="{{ route('employees.index') }}/${element.id}">${element.fio}</a></td>
 												<td>${element.position}${((element.count_subordinates > 0) ? ' <a href="#" data-branch="' + element.id + '" class="branch float-right"><i class="fa fa-plus"></i></a>' : '')}</td>
 											</tr>`;
 					});
