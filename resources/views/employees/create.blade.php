@@ -55,6 +55,7 @@
 @section('js')
 <script type="text/javascript">
 	$('#director_id').select2({
+		theme: 'bootstrap4',
 		ajax: {
 			url: '{{ route('employees.index') }}',
 			dataType: 'json',

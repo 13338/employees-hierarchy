@@ -94,6 +94,7 @@
 <script type="text/javascript">
 	// ajax select for director field
 	$('#director_id, #new_director_id').select2({
+		theme: 'bootstrap4',
 		ajax: {
 			url: '{{ route('employees.index') }}',
 			dataType: 'json',
